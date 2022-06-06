@@ -38,7 +38,7 @@ const start = async () => {
         try {
             if(text ==='/start') {
                 const user = await UserModel.findOne({chatId})
-                if(!user) {
+                if(!user || user.chatId != chatId) {
                     await UserModel.create({chatId})
                 }
                 return  bot.sendMessage(chatId, `👋 ${name} welcome!`, buttons)
@@ -70,7 +70,7 @@ const start = async () => {
             if(data === 'mayKey') {
                 const user = await UserModel.findOne({chatId})
                 if(user.key) {
-                    bot.sendMessage(chatId, 'Your key')
+                    bot.sendMessage(chatId, 'Your key:')
                     return bot.sendMessage(chatId, `${user.key}`)
                 }
                 return  bot.sendMessage(chatId, 'You don\'t have a key', button)
