@@ -38,7 +38,7 @@ const start = async () => {
         try {
             if(text ==='/start') {
                 const user = await UserModel.findOne({chatId})
-                if(!user || user.chatId != chatId) {
+                if(!user) {
                     await UserModel.create({chatId})
                 }
                 return  bot.sendMessage(chatId, `👋 ${name} welcome!`, buttons)
