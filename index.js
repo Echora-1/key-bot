@@ -60,7 +60,7 @@ const start = async () => {
                 if(!user.key) {
                     bot.sendMessage(chatId, 'Key bay process...')
                     user.key = String(Math.random()).split('.')[1]
-                    user.save();
+                    await user.save();
                     bot.sendMessage(chatId, `Your key:`)
                     bot.sendMessage(chatId, `${user.key}`)
                     return
@@ -70,8 +70,8 @@ const start = async () => {
             if(data === 'mayKey') {
                 const user = await UserModel.findOne({chatId})
                 if(user.key) {
-                    bot.sendMessage(chatId, 'Your key:')
-                    return bot.sendMessage(chatId, `${user.key}`)
+                    await bot.sendMessage(chatId, 'Your key:')
+                    return await bot.sendMessage(chatId, `${user.key}`)
                 }
                 return  bot.sendMessage(chatId, 'You don\'t have a key', button)
             }
