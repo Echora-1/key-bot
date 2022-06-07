@@ -1,9 +1,9 @@
 const sequelize = require('./db');
-const {DataTypes} = require('sequelize');
+const { DataTypes } = require('sequelize');
 
-const User = sequelize.define('user', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, unique: true, autoIncrement: true},
-    chatId: {type: DataTypes.STRING, unique: true},
+
+const User = sequelize.define('User', {
+    chatId: {type: DataTypes.INTEGER, unique: true},
     key: {type: DataTypes.STRING, unique: true}
 })
 

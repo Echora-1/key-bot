@@ -29,18 +29,18 @@ const start = async () => {
         console.log("Ошибка подключения к бд", e)
     }
 
+    const user = await UserModel.findAll();
+    console.log(user)
 
     bot.on('message',async msg => {
         const text = msg.text;
         const chatId = msg.chat.id;
-        const name = msg.chat.last_name;
-
+        const name = msg.chat.first_name;
         try {
             if(text ==='/start') {
-                const user = await UserModel.findOne({chatId})
-                if(!user) {
-                    await UserModel.create({chatId})
-                }
+                await UserModel.findOrCreate({
+                    where: { chatId },
+                });
                 return  bot.sendMessage(chatId, `👋 ${name} welcome!`, buttons)
             }
             return  bot.sendMessage(chatId, 'Unknown command')
@@ -56,19 +56,19 @@ const start = async () => {
         const chatId = msg.message.chat.id;
         try {
             if(data === 'bayKey') {
-                const user = await UserModel.findOne({chatId})
+                const user = await UserModel.findOne({ where: { chatId } })
                 if(!user.key) {
                     bot.sendMessage(chatId, 'Key bay process...')
                     user.key = String(Math.random()).split('.')[1]
                     await user.save();
-                    bot.sendMessage(chatId, `Your key:`)
-                    bot.sendMessage(chatId, `${user.key}`)
+                    await bot.sendMessage(chatId, `Your key:`)
+                    await bot.sendMessage(chatId, `${user.key}`)
                     return
                 }
                     return bot.sendMessage(chatId, 'You already have a key')
             }
             if(data === 'mayKey') {
-                const user = await UserModel.findOne({chatId})
+                const user = await UserModel.findOne({ where: { chatId } })
                 if(user.key) {
                     await bot.sendMessage(chatId, 'Your key:')
                     return await bot.sendMessage(chatId, `${user.key}`)
